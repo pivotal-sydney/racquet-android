@@ -13,6 +13,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.pivotal.racquetandroid.R;
+import io.pivotal.racquetandroid.activity.ClubActivity;
 import io.pivotal.racquetandroid.model.Club;
 
 public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ClubViewHolder> {
@@ -46,12 +47,21 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ClubViewHold
         @Bind(R.id.image)
         public ImageView image;
 
-        public ClubViewHolder(View itemView) {
+        private Club club;
+
+        public ClubViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ClubActivity.startActivity(v.getContext(), club);
+                }
+            });
         }
 
         public void bind(Club club) {
+            this.club = club;
             name.setText(club.getName());
             Picasso.with(itemView.getContext()).load(club.getLogo().getStandard().getUrl()).placeholder(R.drawable.club).into(image);
         }

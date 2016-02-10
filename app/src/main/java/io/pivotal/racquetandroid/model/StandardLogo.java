@@ -2,8 +2,10 @@ package io.pivotal.racquetandroid.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StandardLogo {
+public class StandardLogo implements Serializable {
 
     private String url;
 
