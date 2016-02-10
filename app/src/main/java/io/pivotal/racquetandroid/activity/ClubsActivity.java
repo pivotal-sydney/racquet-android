@@ -13,6 +13,6 @@ public class ClubsActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.content, ClubsFragment.newInstance()).commit();
         }
-        setContentView(R.layout.activity_club);
+        setContentView(R.layout.activity_base);
     }
 }

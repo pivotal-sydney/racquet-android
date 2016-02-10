@@ -5,15 +5,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import io.pivotal.racquetandroid.R;
+import io.pivotal.racquetandroid.fragment.ClubFragment;
 import io.pivotal.racquetandroid.model.Club;
 
 public class ClubActivity extends AppCompatActivity {
-    public static final String CLUB_KEY = "club_key";
+    static final String CLUB_KEY = "club_key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, ClubFragment.newInstance()).commit();
+        }
         Club club = (Club) getIntent().getExtras().getSerializable(CLUB_KEY);
+        setContentView(R.layout.activity_base);
         setTitle(club.getName());
     }
 

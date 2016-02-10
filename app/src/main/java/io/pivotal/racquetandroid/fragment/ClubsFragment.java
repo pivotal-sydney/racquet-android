@@ -48,7 +48,7 @@ public class ClubsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_club, null);
+        return inflater.inflate(R.layout.fragment_clubs, null);
     }
 
     @Override
@@ -59,9 +59,11 @@ public class ClubsFragment extends Fragment {
         call.enqueue(new Callback<List<Club>>() {
             @Override
             public void onResponse(Call<List<Club>> call, Response<List<Club>> response) {
-                adapter = new ClubsAdapter(response.body());
-                list.setAdapter(adapter);
-                list.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+                if (response.body() != null) {
+                    adapter = new ClubsAdapter(response.body());
+                    list.setAdapter(adapter);
+                    list.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+                }
             }
 
             @Override
