@@ -28,6 +28,9 @@ android {
         debug {
             buildConfigField "String", "RACQUETIO_BASE_URL", "\"" + System.getenv("RACQUETIO_BASE_URL") + "\""
         }
+        release {
+            buildConfigField "String", "RACQUETIO_BASE_URL", "\"" + System.getenv("RACQUETIO_BASE_URL") + "\""
+        }
     }
     useLibrary 'org.apache.http.legacy'
 }
