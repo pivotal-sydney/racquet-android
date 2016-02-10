@@ -9,18 +9,17 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.pivotal.racquetandroid.R;
 import io.pivotal.racquetandroid.model.Club;
 
-public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubViewHolder> {
+public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ClubViewHolder> {
 
     private List<Club> clubs;
 
-    public ClubAdapter(List<Club> clubs) {
+    public ClubsAdapter(List<Club> clubs) {
         this.clubs = clubs;
     }
 

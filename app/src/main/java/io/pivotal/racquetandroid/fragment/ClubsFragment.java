@@ -19,13 +19,13 @@ import butterknife.ButterKnife;
 import io.pivotal.racquetandroid.R;
 import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.RacquetRestService;
-import io.pivotal.racquetandroid.adapter.ClubAdapter;
+import io.pivotal.racquetandroid.adapter.ClubsAdapter;
 import io.pivotal.racquetandroid.model.Club;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ClubFragment extends Fragment {
+public class ClubsFragment extends Fragment {
 
     @Bind(R.id.list)
     RecyclerView list;
@@ -33,10 +33,10 @@ public class ClubFragment extends Fragment {
     @Inject
     RacquetRestService service;
 
-    ClubAdapter adapter;
+    ClubsAdapter adapter;
 
-    public static ClubFragment newInstance() {
-        return new ClubFragment();
+    public static ClubsFragment newInstance() {
+        return new ClubsFragment();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ClubFragment extends Fragment {
         call.enqueue(new Callback<List<Club>>() {
             @Override
             public void onResponse(Call<List<Club>> call, Response<List<Club>> response) {
-                adapter = new ClubAdapter(response.body());
+                adapter = new ClubsAdapter(response.body());
                 list.setAdapter(adapter);
                 list.setLayoutManager(new GridLayoutManager(getActivity(), 3));
             }

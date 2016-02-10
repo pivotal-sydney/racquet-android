@@ -23,18 +23,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Config(constants = BuildConfig.class)
 @RunWith(RobolectricGradleTestRunner.class)
-public class ClubFragmentTest {
+public class ClubsFragmentTest {
 
     @Inject
     RacquetRestService restService;
 
     MockRacquetRestService mockRestService;
 
-    private ClubFragment fragment;
+    private ClubsFragment fragment;
 
     @Before
     public void setup() {
-        fragment = ClubFragment.newInstance();
+        fragment = ClubsFragment.newInstance();
         ((TestApplicationComponent) RacquetApplication.getApplication().getApplicationComponent()).inject(this);
         RacquetApplication.getApplication().getApplicationComponent().inject(fragment);
         mockRestService = (MockRacquetRestService) restService;

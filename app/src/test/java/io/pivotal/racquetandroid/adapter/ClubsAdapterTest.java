@@ -19,16 +19,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Config(constants = BuildConfig.class)
 @RunWith(RobolectricGradleTestRunner.class)
-public class ClubAdapterTest {
+public class ClubsAdapterTest {
 
-    private ClubAdapter adapter;
+    private ClubsAdapter adapter;
 
     @Test
     public void onCreate_andBindsData() {
         List<Club> clubs = ModelBuilder.getClubs(1, "Club Name");
-        adapter = new ClubAdapter(clubs);
+        adapter = new ClubsAdapter(clubs);
 
-        ClubAdapter.ClubViewHolder holder = adapter.onCreateViewHolder(new LinearLayout(RuntimeEnvironment.application), 0);
+        ClubsAdapter.ClubViewHolder holder = adapter.onCreateViewHolder(new LinearLayout(RuntimeEnvironment.application), 0);
         adapter.onBindViewHolder(holder, 0);
 
         assertThat(holder.name).hasText("Club Name0");
@@ -37,7 +37,7 @@ public class ClubAdapterTest {
     @Test
     public void itemCount_matchesDataSize() {
         List<Club> clubs = ModelBuilder.getClubs(3, "Club Name");
-        adapter = new ClubAdapter(clubs);
+        adapter = new ClubsAdapter(clubs);
         assertThat(adapter.getItemCount()).isEqualTo(3);
     }
 }
