@@ -14,6 +14,7 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="1"
+            android:text="\@aleungpivotal"
             android:hint="@string/club_winner_hint" />
 
         <EditText
@@ -21,6 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="1"
+            android:text="\@dylanjgriffith"
             android:hint="@string/club_loser_hint" />
 
         <ImageButton
