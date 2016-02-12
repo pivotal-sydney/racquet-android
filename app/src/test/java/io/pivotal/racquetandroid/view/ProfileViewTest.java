@@ -64,7 +64,6 @@ public class ProfileViewTest {
         assertThat(view.profileNameView).hasText("Profile Name");
         verify(picasso).load("http://profile/url");
         verify(requestCreator).into(view.profileImageView);
-
     }
 
 }

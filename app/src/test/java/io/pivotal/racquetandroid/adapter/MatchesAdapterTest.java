@@ -58,7 +58,7 @@ public class MatchesAdapterTest {
         adapter.onBindViewHolder(holder, 1);
         assertThat(holder.winner.getProfileName()).hasText("player2");
         assertThat(holder.loser.getProfileName()).hasText("player1");
-        assertThat(holder.defeated).hasText("def");
+        assertThat(holder.defeated).hasText("Defeated");
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(picasso, times(2)).load(captor.capture());

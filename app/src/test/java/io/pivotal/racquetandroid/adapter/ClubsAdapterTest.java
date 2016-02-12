@@ -50,7 +50,7 @@ public class ClubsAdapterTest {
         ClubsAdapter.ClubViewHolder holder = adapter.onCreateViewHolder(new LinearLayout(RuntimeEnvironment.application), 0);
         adapter.onBindViewHolder(holder, 0);
 
-        assertThat(holder.name).hasText("Club Name0");
+        assertThat(holder.profileView.getProfileName()).hasText("Club Name0");
     }
 
     @Test

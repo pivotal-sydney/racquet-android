@@ -2,5 +2,5 @@
     <string name="app_name">RacquetAndroid</string>
     <string name="club_loser_hint">\@loser</string>
     <string name="club_winner_hint">\@winner</string>
-    <string name="defeated">def</string>
+    <string name="defeated">Defeated</string>
 </resources>
