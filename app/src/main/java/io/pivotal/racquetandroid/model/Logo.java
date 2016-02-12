@@ -6,8 +6,8 @@ import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Logo implements Serializable {
-    private StandardLogo standard;
-    private String url;
+    private StandardLogo standard = new StandardLogo();
+    private String url = "";
 
     public StandardLogo getStandard() {
         return standard;

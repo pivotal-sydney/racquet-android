@@ -7,18 +7,16 @@ import java.util.List;
 import java.util.Queue;
 
 import io.pivotal.racquetandroid.model.Club;
-import io.pivotal.racquetandroid.model.MatchResultRequest;
-import okhttp3.MediaType;
-import okhttp3.ResponseBody;
+import io.pivotal.racquetandroid.model.request.MatchResultRequest;
+import io.pivotal.racquetandroid.model.response.Matches;
 import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.http.Body;
 import retrofit2.http.Path;
 import retrofit2.mock.Calls;
 
 public class MockRacquetRestService implements RacquetRestService {
     private Queue<Pair<Object, Boolean>> responses = new ArrayDeque<>();
-    private MatchResultRequest lastMatchResultRequest;
+    private MatchResultRequest lastMatchResult;
 
     public void addResponse(Object response, boolean success) {
         responses.add(new Pair<>(response, success));
@@ -26,40 +24,45 @@ public class MockRacquetRestService implements RacquetRestService {
 
     @Override
     public Call<List<Club>> getClubs() {
-        return Calls.response(getListCallResponse(Club.class));
+        Pair<Object, Boolean> pair = responses.peek();
+        if (pair != null && pair.second) {
+            return Calls.response(getListCallResponse(Club.class));
+        }
+        return Calls.failure(null);
     }
 
     @Override
-    public Call<Void> postMatch(@Path("clubId") String clubId, @Body MatchResultRequest request) {
-        lastMatchResultRequest = request;
-        return Calls.response(getSingleCallResponse(Void.class));
+    public Call<Void> postMatch(int clubId, MatchResultRequest request) {
+        lastMatchResult = request;
+        Pair<Object, Boolean> pair = responses.peek();
+        if (pair != null && pair.second) {
+            return Calls.response(getSingleCallResponse(Void.class));
+        }
+        return Calls.failure(null);
     }
 
-    public MatchResultRequest getLastMatchResultRequest() {
-        return lastMatchResultRequest;
+    @Override
+    public Call<Matches> getMatches(@Path("clubId") int clubId) {
+        Pair<Object, Boolean> pair = responses.peek();
+        if (pair != null && pair.second) {
+            return Calls.response(getSingleCallResponse(Matches.class));
+        }
+        return Calls.failure(null);
+    }
+
+    public MatchResultRequest getLastMatchResult() {
+        return lastMatchResult;
     }
 
     public <T> Response<List<T>> getListCallResponse(Class<T> clazz) {
         Pair<Object, Boolean> pair = responses.poll();
         List<T> responseDaturrr = (List<T>) pair.first;
-        Response<List<T>> response;
-        if (pair.second) {
-            response = Response.success(responseDaturrr);
-        } else {
-            response = Response.error(500, ResponseBody.create(MediaType.parse("application/json"), "{}"));
-        }
-        return response;
+        return Response.success(responseDaturrr);
     }
 
     public <T> Response<T> getSingleCallResponse(Class<T> clazz) {
         Pair<Object, Boolean> pair = responses.poll();
         T responseDaturrr = (T) pair.first;
-        Response<T> response;
-        if (pair.second) {
-            response = Response.success(responseDaturrr);
-        } else {
-            response = Response.error(500, ResponseBody.create(MediaType.parse("application/json"), "{}"));
-        }
-        return response;
+        return Response.success(responseDaturrr);
     }
 }

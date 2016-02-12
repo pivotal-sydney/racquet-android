@@ -7,7 +7,7 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StandardLogo implements Serializable {
 
-    private String url;
+    private String url = "";
 
     public String getUrl() {
         return url;

@@ -22,7 +22,7 @@ public class ClubActivityTest {
 
     @Test
     public void startActivity_setsTitleAsClubName() {
-        Club club = ModelBuilder.getClub("My Club");
+        Club club = ModelBuilder.getClub(1, "My Club");
         Intent intent = ClubActivity.getIntent(RuntimeEnvironment.application, club);
         ActivityController<ClubActivity> activityController = ActivityController.of(Robolectric.getShadowsAdapter(), ClubActivity.class);
         ClubActivity activity = activityController.withIntent(intent).setup().get();

@@ -16,7 +16,7 @@ public class RacquetApplication extends Application {
     }
 
     protected void buildComponent() {
-        applicationComponent = DaggerApplicationComponent.builder().applicationModule(new ApplicationModule()).build();
+        applicationComponent = DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this)).build();
     }
 
     public ApplicationComponent getApplicationComponent() {

@@ -10,18 +10,26 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.pivotal.racquetandroid.R;
+import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.activity.ClubActivity;
 import io.pivotal.racquetandroid.model.Club;
+import io.pivotal.racquetandroid.util.CircleTransform;
 
 public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ClubViewHolder> {
+
+    @Inject
+    Picasso picasso;
 
     private List<Club> clubs;
 
     public ClubsAdapter(List<Club> clubs) {
         this.clubs = clubs;
+        RacquetApplication.getApplication().getApplicationComponent().inject(this);
     }
 
     @Override
@@ -33,7 +41,7 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ClubViewHold
     @Override
     public void onBindViewHolder(ClubViewHolder holder, int position) {
         Club club = clubs.get(position);
-        holder.bind(club);
+        holder.bind(club, picasso);
     }
 
     @Override
@@ -43,9 +51,10 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ClubViewHold
 
     public static class ClubViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.name)
-        public TextView name;
+        TextView name;
+
         @Bind(R.id.image)
-        public ImageView image;
+        ImageView image;
 
         private Club club;
 
@@ -60,10 +69,10 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ClubViewHold
             });
         }
 
-        public void bind(Club club) {
+        public void bind(Club club, Picasso picasso) {
             this.club = club;
             name.setText(club.getName());
-            Picasso.with(itemView.getContext()).load(club.getLogo().getStandard().getUrl()).placeholder(R.drawable.club).into(image);
+            picasso.load(club.getLogo().getStandard().getUrl()).placeholder(R.drawable.club).transform(new CircleTransform()).into(image);
         }
     }
 }
