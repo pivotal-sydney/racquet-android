@@ -73,4 +73,18 @@ public class ClubFragmentTest {
 
         assertThat(fragment.adapter.getItemCount()).isEqualTo(5);
     }
+
+    @Test
+    public void pullToRefresh_shouldRepopulateResults() {
+        SupportFragmentTestUtil.startFragment(fragment);
+
+        assertThat(fragment.adapter.getItemCount()).isEqualTo(0);
+
+        Matches matches = ModelBuilder.getMatches(5, "p1", "p2");
+        mockRestService.addResponse(matches, true);
+
+        fragment.onRefresh();
+
+        assertThat(fragment.adapter.getItemCount()).isEqualTo(5);
+    }
 }

@@ -3,6 +3,7 @@ package io.pivotal.racquetandroid.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ClubFragment extends Fragment {
+public class ClubFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private static String CLUB_KEY = "club_name_key";
     @Bind(R.id.loser)
     EditText loser;
@@ -38,6 +39,9 @@ public class ClubFragment extends Fragment {
 
     @Bind(R.id.submit)
     ImageButton submit;
+
+    @Bind(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Bind(R.id.list)
     RecyclerView list;
@@ -97,6 +101,8 @@ public class ClubFragment extends Fragment {
                 });
             }
         });
+        list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     void populateResults() {
@@ -106,12 +112,13 @@ public class ClubFragment extends Fragment {
             public void onResponse(Call<Matches> call, Response<Matches> response) {
                 adapter.setMatches(response.body());
                 list.setAdapter(adapter);
-                list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<Matches> call, Throwable t) {
                 Toast.makeText(getContext(), "Failed to fetch match results", Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -122,5 +129,10 @@ public class ClubFragment extends Fragment {
         bundle.putSerializable(CLUB_KEY, club);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @Override
+    public void onRefresh() {
+        populateResults();
     }
 }
