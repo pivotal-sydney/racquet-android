@@ -24,6 +24,7 @@ import io.pivotal.racquetandroid.adapter.MatchesAdapter;
 import io.pivotal.racquetandroid.model.Club;
 import io.pivotal.racquetandroid.model.request.MatchResult;
 import io.pivotal.racquetandroid.model.request.MatchResultRequest;
+import io.pivotal.racquetandroid.model.response.Match;
 import io.pivotal.racquetandroid.model.response.Matches;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -83,19 +84,20 @@ public class ClubFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 MatchResult matchResult = new MatchResult();
                 matchResult.setWinner(winner.getText().toString());
                 matchResult.setLoser(loser.getText().toString());
-                Call<Void> call = racquetRestService.postMatch(club.getId(), new MatchResultRequest(matchResult));
-                call.enqueue(new Callback<Void>() {
+                Call<Match> call = racquetRestService.postMatch(club.getId(), new MatchResultRequest(matchResult));
+                call.enqueue(new Callback<Match>() {
                     @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
+                    public void onResponse(Call<Match> call, Response<Match> response) {
                         if (response.isSuccess()) {
                             Toast.makeText(getActivity(), "Successfully posted match!", Toast.LENGTH_SHORT).show();
+                            adapter.addMatch(response.body());
                         } else {
                             Toast.makeText(getActivity(), "Failed to post match: " + response.errorBody().toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
+                    public void onFailure(Call<Match> call, Throwable t) {
 
                     }
                 });
@@ -104,6 +106,8 @@ public class ClubFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         swipeRefreshLayout.setOnRefreshListener(this);
     }
+
+
 
     void populateResults() {
         Call<Matches> call = racquetRestService.getMatches(club.getId());

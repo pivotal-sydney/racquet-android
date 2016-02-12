@@ -54,15 +54,18 @@ public class ClubFragmentTest {
     @Test
     public void onSubmit_shouldPostMatchResultToRacquetRestService() {
         SupportFragmentTestUtil.startFragment(fragment);
-        mockRestService.addResponse(null, true);
+        mockRestService.addResponse(ModelBuilder.getMatch("p1", "p2"), true);
         fragment.winner.setText("winner");
         fragment.loser.setText("loser");
 
+        assertThat(fragment.adapter.getItemCount()).isEqualTo(0);
         fragment.submit.performClick();
 
         MatchResult matchResult = mockRestService.getLastMatchResult().getMatch();
         assertThat(matchResult.getWinner()).isEqualTo("winner");
         assertThat(matchResult.getLoser()).isEqualTo("loser");
+
+        assertThat(fragment.adapter.getItemCount()).isEqualTo(1);
     }
 
     @Test

@@ -23,6 +23,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
 
     public MatchesAdapter(Matches matches) {
         this.matches = matches;
+        setHasStableIds(true);
     }
 
     public void setMatches(Matches matches) {
@@ -41,8 +42,18 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
     }
 
     @Override
+    public long getItemId(int position) {
+        return matches.getResults().get(position).hashCode();
+    }
+
+    @Override
     public int getItemCount() {
         return matches.getResults().size();
+    }
+
+    public void addMatch(Match match) {
+        matches.getResults().add(0, match);
+        notifyDataSetChanged();
     }
 
     public static class MatchesViewHolder extends RecyclerView.ViewHolder {
