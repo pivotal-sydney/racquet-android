@@ -3,4 +3,5 @@
     <string name="club_loser_hint">\@loser</string>
     <string name="club_winner_hint">\@winner</string>
     <string name="defeated">Defeated</string>
+    <string name="established_clubs">Established Clubs</string>
 </resources>

@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import io.pivotal.racquetandroid.R;
 import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.RacquetRestService;
+import io.pivotal.racquetandroid.adapter.ClubItemDecorator;
 import io.pivotal.racquetandroid.adapter.ClubsAdapter;
 import io.pivotal.racquetandroid.model.Club;
 import retrofit2.Call;
@@ -61,8 +62,9 @@ public class ClubsFragment extends Fragment {
             public void onResponse(Call<List<Club>> call, Response<List<Club>> response) {
                 if (response.body() != null) {
                     adapter = new ClubsAdapter(response.body());
-                    list.setAdapter(adapter);
                     list.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+                    list.addItemDecoration(new ClubItemDecorator(getActivity(), 3));
+                    list.setAdapter(adapter);
                 }
             }
 

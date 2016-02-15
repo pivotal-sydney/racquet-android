@@ -63,7 +63,7 @@ public class ProfileView extends LinearLayout {
 
     public void setProfileImageUrl(String imageUrl) {
         if (!TextUtils.isEmpty(imageUrl)) {
-            picasso.load(imageUrl).transform(new CircleTransform()).into(profileImageView);
+            picasso.load(imageUrl).transform(new CircleTransform()).placeholder(R.drawable.club).into(profileImageView);
         }
     }
 

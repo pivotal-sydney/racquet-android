@@ -1,6 +1,7 @@
 package io.pivotal.racquetandroid.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,8 +23,7 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ClubViewHold
 
     @Override
     public ClubViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = View.inflate(parent.getContext(), R.layout.view_club_item, null);
-        return new ClubViewHolder(view);
+        return new ClubViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.view_club_item, parent, false));
     }
 
     @Override
