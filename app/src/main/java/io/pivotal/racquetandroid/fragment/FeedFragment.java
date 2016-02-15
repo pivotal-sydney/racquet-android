@@ -30,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ClubFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private static String CLUB_KEY = "club_name_key";
     @Bind(R.id.loser)
     EditText loser;
@@ -127,8 +127,8 @@ public class ClubFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
     }
 
-    public static ClubFragment newInstance(Club club) {
-        ClubFragment fragment = new ClubFragment();
+    public static FeedFragment newInstance(Club club) {
+        FeedFragment fragment = new FeedFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(CLUB_KEY, club);
         fragment.setArguments(bundle);

@@ -26,19 +26,19 @@ import static org.robolectric.Shadows.shadowOf;
 
 @Config(constants = BuildConfig.class)
 @RunWith(RobolectricGradleTestRunner.class)
-public class ClubFragmentTest {
+public class FeedFragmentTest {
 
     @Inject
     RacquetRestService restService;
 
     MockRacquetRestService mockRestService;
 
-    private ClubFragment fragment;
+    private FeedFragment fragment;
 
     @Before
     public void setup() {
         Club club = ModelBuilder.getClub(1, "pivotal-sydney");
-        fragment = ClubFragment.newInstance(club);
+        fragment = FeedFragment.newInstance(club);
         ((TestApplicationComponent) RacquetApplication.getApplication().getApplicationComponent()).inject(this);
         mockRestService = (MockRacquetRestService) restService;
     }

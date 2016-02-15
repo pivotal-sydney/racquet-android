@@ -3,13 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="23dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="23dp"
         android:orientation="horizontal">
 
         <io.pivotal.racquetandroid.view.ProfileView
-            android:layout_margin="16dp"
             android:id="@+id/winner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -18,22 +22,23 @@
 
         <TextView
             android:id="@+id/defeated"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/defeated"
             android:textColor="@color/green" />
 
         <io.pivotal.racquetandroid.view.ProfileView
-            android:layout_margin="16dp"
             android:id="@+id/loser"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center" />
     </LinearLayout>
+
     <View
-        android:background="@color/green_outline"
         android:layout_width="match_parent"
-        android:layout_height="1dp" />
+        android:layout_height="1dp"
+        android:background="@color/green_outline" />
 </LinearLayout>
