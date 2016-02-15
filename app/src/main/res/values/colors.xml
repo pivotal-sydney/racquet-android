@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="green">#67AC5B</color>
     <color name="green_outline">#DAECD7</color>
+    <color name="black">#333333</color>
 </resources>

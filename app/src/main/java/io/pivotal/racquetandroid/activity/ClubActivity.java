@@ -43,9 +43,9 @@ public class ClubActivity extends AppCompatActivity {
 
         adapter = new ClubPagerAdapter(club, getSupportFragmentManager());
         pager.setAdapter(adapter);
-        tabLayout.addTab(tabLayout.newTab().setText("Feed"));
-        tabLayout.addTab(tabLayout.newTab().setText("Leaderboard"));
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager));
+        tabLayout.setTabsFromPagerAdapter(adapter);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

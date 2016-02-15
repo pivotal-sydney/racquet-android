@@ -4,4 +4,6 @@
     <string name="club_winner_hint">\@winner</string>
     <string name="defeated">Defeated</string>
     <string name="established_clubs">Established Clubs</string>
+    <string name="tab_feed_title">Feed</string>
+    <string name="tab_leaderboard_title">Leaderboard</string>
 </resources>

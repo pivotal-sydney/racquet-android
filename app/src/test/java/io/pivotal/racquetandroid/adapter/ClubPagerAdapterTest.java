@@ -42,4 +42,10 @@ public class ClubPagerAdapterTest {
         assertThat(fragment).isInstanceOf(LeaderboardFragment.class);
     }
 
+    @Test
+    public void getPageTitle_returnsCorrectTitle() {
+        assertThat(adapter.getPageTitle(0)).isEqualTo("Feed");
+        assertThat(adapter.getPageTitle(1)).isEqualTo("Leaderboard");
+    }
+
 }
