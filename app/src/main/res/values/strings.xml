@@ -2,8 +2,11 @@
     <string name="app_name">RacquetAndroid</string>
     <string name="club_loser_hint">\@loser</string>
     <string name="club_winner_hint">\@winner</string>
-    <string name="defeated">Defeated</string>
+    <string name="defeated">defeated</string>
     <string name="established_clubs">Established Clubs</string>
     <string name="tab_feed_title">Feed</string>
     <string name="tab_leaderboard_title">Leaderboard</string>
+    <string name="boom">Boom!</string>
+    <string name="record_match">Record a new match result</string>
+    <string name="submit_match">Go</string>
 </resources>

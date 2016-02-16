@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/green_outline"
     android:orientation="vertical">
 
     <FrameLayout
@@ -13,44 +14,53 @@
             android:layout_width="125dp"
             android:layout_height="125dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/mini_racquet"
-            android:layout_margin="25dp"/>
+            android:layout_margin="25dp"
+            android:src="@drawable/mini_racquet" />
     </FrameLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginBottom="1dp"
+        android:background="@android:color/white"
         android:orientation="horizontal">
+
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/green"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="30dp"/>
+            android:layout_marginLeft="30dp"
+            android:layout_weight="1"
+            android:background="@color/green" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/established_clubs"
-            android:textColor="@color/green"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_gravity="center_vertical"/>
+            android:text="@string/established_clubs"
+            android:textColor="@color/green" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/green"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="30dp"/>
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
+            android:background="@color/green" />
 
     </LinearLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
-        android:background="@color/green_outline"
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

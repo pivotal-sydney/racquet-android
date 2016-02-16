@@ -18,6 +18,7 @@ import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.RacquetRestService;
 import io.pivotal.racquetandroid.TestApplicationComponent;
 import io.pivotal.racquetandroid.model.Club;
+import io.pivotal.racquetandroid.util.ModelBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,23 +43,20 @@ public class ClubsFragmentTest {
 
     @Test
     public void onViewCreated_shouldPopulateAdapter() {
-        List<Club> clubs = new ArrayList<>();
-        Club club = new Club();
-        club.setName("Pivotal Sydney");
-        clubs.add(club);
-        club = new Club();
-        club.setName("Pivotal NY");
-        clubs.add(club);
-        club = new Club();
-        club.setName("Pivotal Toronto");
-        clubs.add(club);
-        club = new Club();
-        club.setName("Pivotal San Francisco");
-        clubs.add(club);
-
+        List<Club> clubs = ModelBuilder.getClubs(4, "Club Name");
         mockRestService.addResponse(clubs, true);
-
         SupportFragmentTestUtil.startFragment(fragment);
+        assertThat(fragment.adapter.getItemCount()).isEqualTo(4);
+    }
+
+    @Test
+    public void pullToRefresh_refetchesClubs() {
+        SupportFragmentTestUtil.startFragment(fragment);
+        assertThat(fragment.adapter.getItemCount()).isEqualTo(0);
+
+        List<Club> clubs = ModelBuilder.getClubs(4, "Club Name");
+        mockRestService.addResponse(clubs, true);
+        fragment.onRefresh();
 
         assertThat(fragment.adapter.getItemCount()).isEqualTo(4);
     }

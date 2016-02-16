@@ -53,4 +53,12 @@ public class ClubActivityTest {
 
         assertThat(activity).isFinishing();
     }
+
+    @Test
+    public void onClickFAB_shouldShowRecordMatchView() throws Exception {
+        assertThat(activity.recordMatchView).isInvisible();
+        activity.button.performClick();
+        assertThat(activity.recordMatchView).isVisible();
+        assertThat(activity.button).isGone();
+    }
 }

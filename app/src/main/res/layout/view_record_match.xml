@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:paddingLeft="@dimen/padding_width"
+    android:paddingRight="@dimen/padding_width">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/padding_width"
+        android:paddingRight="@dimen/padding_width">
+
+        <TextView
+            android:id="@+id/boom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:text="@string/boom"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/record_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="@string/record_match"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/winner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:hint="@string/club_winner_hint"
+            android:padding="@dimen/padding_width"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black_translucent" />
+
+        <TextView
+            android:id="@+id/defeated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:text="@string/defeated"
+            android:textColor="@color/green" />
+
+        <EditText
+            android:id="@+id/loser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/club_loser_hint"
+            android:padding="@dimen/padding_width"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black_translucent" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/padding_width"
+        android:background="@color/green"
+        android:text="@string/submit_match" />
+
+</FrameLayout>

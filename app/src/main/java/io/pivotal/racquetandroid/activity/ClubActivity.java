@@ -3,17 +3,21 @@ package io.pivotal.racquetandroid.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewAnimationUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.pivotal.racquetandroid.R;
 import io.pivotal.racquetandroid.adapter.ClubPagerAdapter;
 import io.pivotal.racquetandroid.model.Club;
+import io.pivotal.racquetandroid.view.RecordMatchView;
 
 public class ClubActivity extends AppCompatActivity {
 
@@ -28,6 +32,12 @@ public class ClubActivity extends AppCompatActivity {
     @Bind(R.id.tab_layout)
     TabLayout tabLayout;
 
+    @Bind(R.id.fab)
+    FloatingActionButton button;
+
+    @Bind(R.id.record_match)
+    RecordMatchView recordMatchView;
+
     private ClubPagerAdapter adapter;
 
     @Override
@@ -36,6 +46,8 @@ public class ClubActivity extends AppCompatActivity {
         Club club = (Club) getIntent().getExtras().getSerializable(CLUB_KEY);
         setContentView(R.layout.activity_club);
         ButterKnife.bind(this);
+
+        recordMatchView.setClub(club);
 
         //noinspection ConstantConditions
         toolbar.setTitle(club.getName());
@@ -49,6 +61,19 @@ public class ClubActivity extends AppCompatActivity {
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRecordMatch();
+            }
+        });
+    }
+
+    private void showRecordMatch() {
+        recordMatchView.setVisibility(View.VISIBLE);
+        ViewAnimationUtils.createCircularReveal(recordMatchView, (button.getLeft() + button.getRight()) / 2, (button.getBottom() + button.getTop()) / 2, 0, Math.max(recordMatchView.getWidth(), recordMatchView.getHeight())).setDuration(250).start();
+        button.hide();
     }
 
     @Override

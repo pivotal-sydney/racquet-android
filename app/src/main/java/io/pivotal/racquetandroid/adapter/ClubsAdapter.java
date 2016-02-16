@@ -37,6 +37,11 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ClubViewHold
         return clubs.size();
     }
 
+    public void setClubs(List<Club> clubs) {
+        this.clubs = clubs;
+        notifyDataSetChanged();
+    }
+
     public static class ClubViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.club)
         ProfileView profileView;

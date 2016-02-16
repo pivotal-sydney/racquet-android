@@ -13,12 +13,12 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface RacquetRestService {
-    @GET("/clubs.json")
+    @GET("/api/clubs")
     Call<List<Club>> getClubs();
 
-    @POST("/api/{clubId}/matches.json")
+    @POST("/api/{clubId}/matches")
     Call<Match> postMatch(@Path("clubId") int clubId, @Body MatchResultRequest request);
 
-    @GET("/api/{clubId}/matches.json")
+    @GET("/api/{clubId}/matches")
     Call<Matches> getMatches(@Path("clubId") int clubSlug);
 }

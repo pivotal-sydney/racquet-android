@@ -3,6 +3,7 @@ package io.pivotal.racquetandroid.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,13 +28,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ClubsFragment extends Fragment {
+public class ClubsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @Bind(R.id.list)
     RecyclerView list;
 
     @Inject
     RacquetRestService service;
+
+    @Bind(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     ClubsAdapter adapter;
 
@@ -56,23 +61,35 @@ public class ClubsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        adapter = new ClubsAdapter(new ArrayList<Club>());
+        list.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        list.addItemDecoration(new ClubItemDecorator(getActivity(), 3));
+        swipeRefreshLayout.setOnRefreshListener(this);
+        populateClubs();
+    }
+
+    private void populateClubs() {
         Call<List<Club>> call = service.getClubs();
         call.enqueue(new Callback<List<Club>>() {
             @Override
             public void onResponse(Call<List<Club>> call, Response<List<Club>> response) {
                 if (response.body() != null) {
-                    adapter = new ClubsAdapter(response.body());
-                    list.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-                    list.addItemDecoration(new ClubItemDecorator(getActivity(), 3));
+                    adapter.setClubs(response.body());
                     list.setAdapter(adapter);
                 }
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<List<Club>> call, Throwable t) {
                 Toast.makeText(getActivity(), "Failed!   " + t, Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
 
+    @Override
+    public void onRefresh() {
+        populateClubs();
     }
 }

@@ -8,6 +8,7 @@ import io.pivotal.racquetandroid.adapter.MatchesAdapterTest;
 import io.pivotal.racquetandroid.fragment.ClubsFragmentTest;
 import io.pivotal.racquetandroid.fragment.FeedFragmentTest;
 import io.pivotal.racquetandroid.view.ProfileViewTest;
+import io.pivotal.racquetandroid.view.RecordMatchViewTest;
 
 @Singleton
 @Component(modules = {TestApplicationModule.class})
@@ -17,4 +18,5 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(MatchesAdapterTest adapter);
     void inject(ClubsAdapterTest adapter);
     void inject(ProfileViewTest profileViewTest);
+    void inject(RecordMatchViewTest recordMatchViewTest);
 }
