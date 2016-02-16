@@ -72,4 +72,11 @@ public class MatchesAdapterTest {
         assertThat(imageCaptor.getAllValues().get(0)).isEqualTo(holder.winner.getProfileImageView());
         assertThat(imageCaptor.getAllValues().get(1)).isEqualTo(holder.loser.getProfileImageView());
     }
+
+    @Test
+    public void addMatch_updatesDataModel() {
+        assertThat(adapter.getItemCount()).isEqualTo(5);
+        adapter.addMatch(ModelBuilder.getMatch("1", "2"));
+        assertThat(adapter.getItemCount()).isEqualTo(6);
+    }
 }

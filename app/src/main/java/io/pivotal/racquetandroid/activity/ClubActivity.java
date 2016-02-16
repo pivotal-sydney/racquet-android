@@ -1,5 +1,7 @@
 package io.pivotal.racquetandroid.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +14,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.pivotal.racquetandroid.R;
+import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.adapter.ClubPagerAdapter;
+import io.pivotal.racquetandroid.event.DismissRecordMatchEvent;
 import io.pivotal.racquetandroid.model.Club;
 import io.pivotal.racquetandroid.view.RecordMatchView;
 
@@ -38,11 +47,26 @@ public class ClubActivity extends AppCompatActivity {
     @Bind(R.id.record_match)
     RecordMatchView recordMatchView;
 
+    @Inject
+    Bus bus;
+
     private ClubPagerAdapter adapter;
+
+    private EventHandler eventHandler;
+
+    AnimatorListenerAdapter animatorListenerAdapter = new AnimatorListenerAdapter() {
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            recordMatchView.setVisibility(View.INVISIBLE);
+            button.show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RacquetApplication.getApplication().getApplicationComponent().inject(this);
         Club club = (Club) getIntent().getExtras().getSerializable(CLUB_KEY);
         setContentView(R.layout.activity_club);
         ButterKnife.bind(this);
@@ -52,6 +76,8 @@ public class ClubActivity extends AppCompatActivity {
         //noinspection ConstantConditions
         toolbar.setTitle(club.getName());
         setSupportActionBar(toolbar);
+
+        eventHandler = new EventHandler();
 
         adapter = new ClubPagerAdapter(club, getSupportFragmentManager());
         pager.setAdapter(adapter);
@@ -70,10 +96,28 @@ public class ClubActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bus.register(eventHandler);
+    }
+
+    @Override
+    protected void onPause() {
+        bus.unregister(eventHandler);
+        super.onPause();
+    }
+
     private void showRecordMatch() {
         recordMatchView.setVisibility(View.VISIBLE);
-        ViewAnimationUtils.createCircularReveal(recordMatchView, (button.getLeft() + button.getRight()) / 2, (button.getBottom() + button.getTop()) / 2, 0, Math.max(recordMatchView.getWidth(), recordMatchView.getHeight())).setDuration(400).start();
+        ViewAnimationUtils.createCircularReveal(recordMatchView, (button.getLeft() + button.getRight()) / 2, (button.getBottom() + button.getTop()) / 2, 0, Math.max(recordMatchView.getWidth(), recordMatchView.getHeight())).setDuration(300).start();
         button.hide();
+    }
+
+    private void hideRecordMatch() {
+        Animator reveal = ViewAnimationUtils.createCircularReveal(recordMatchView, (button.getLeft() + button.getRight()) / 2, (button.getBottom() + button.getTop()) / 2, Math.max(recordMatchView.getWidth(), recordMatchView.getHeight()), 0).setDuration(300);
+        reveal.addListener(animatorListenerAdapter);
+        reveal.start();
     }
 
     @Override
@@ -96,5 +140,13 @@ public class ClubActivity extends AppCompatActivity {
         bundle.putSerializable(CLUB_KEY, club);
         intent.putExtras(bundle);
         return intent;
+    }
+
+    class EventHandler {
+        @Subscribe
+        @SuppressWarnings("unused")
+        public void onDismissRecordMatchEvent(DismissRecordMatchEvent event) {
+            hideRecordMatch();
+        }
     }
 }

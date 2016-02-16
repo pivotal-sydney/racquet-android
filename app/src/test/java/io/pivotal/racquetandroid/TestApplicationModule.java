@@ -1,5 +1,6 @@
 package io.pivotal.racquetandroid;
 
+import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 import com.squareup.picasso.Transformation;
@@ -13,6 +14,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 @Module
@@ -39,6 +41,12 @@ public class TestApplicationModule {
         Picasso picasso = mock(Picasso.class);
         when(picasso.load(anyString())).thenReturn(requestCreator);
         return picasso;
+    }
+
+    @Provides
+    @Singleton
+    public Bus providesBus() {
+        return spy(new Bus());
     }
 
 }

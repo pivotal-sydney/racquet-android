@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -19,7 +22,9 @@ import io.pivotal.racquetandroid.R;
 import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.RacquetRestService;
 import io.pivotal.racquetandroid.adapter.MatchesAdapter;
+import io.pivotal.racquetandroid.event.MatchUpdatedEvent;
 import io.pivotal.racquetandroid.model.Club;
+import io.pivotal.racquetandroid.model.response.Match;
 import io.pivotal.racquetandroid.model.response.Matches;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,9 +41,13 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Inject
     RacquetRestService racquetRestService;
 
+    @Inject
+    Bus bus;
+
     private Club club;
 
     MatchesAdapter adapter;
+    private EventHandler eventHandler;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +55,7 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         RacquetApplication.getApplication().getApplicationComponent().inject(this);
         club = (Club) getArguments().getSerializable(CLUB_KEY);
         adapter = new MatchesAdapter();
+        eventHandler = new EventHandler();
     }
 
     @Nullable
@@ -57,7 +67,14 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onResume() {
         super.onResume();
+        bus.register(eventHandler);
         populateResults();
+    }
+
+    @Override
+    public void onPause() {
+        bus.unregister(eventHandler);
+        super.onPause();
     }
 
     @Override
@@ -97,5 +114,16 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         populateResults();
+    }
+
+    class EventHandler {
+        @Subscribe
+        @SuppressWarnings("unused")
+        public void onMatchUpdatedEvent(MatchUpdatedEvent event) {
+            Match match = event.getMatch();
+            if (match != null) {
+                adapter.addMatch(match);
+            }
+        }
     }
 }

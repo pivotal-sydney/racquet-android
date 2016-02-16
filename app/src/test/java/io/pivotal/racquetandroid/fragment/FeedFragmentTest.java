@@ -1,5 +1,7 @@
 package io.pivotal.racquetandroid.fragment;
 
+import com.squareup.otto.Bus;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +16,8 @@ import io.pivotal.racquetandroid.MockRacquetRestService;
 import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.RacquetRestService;
 import io.pivotal.racquetandroid.TestApplicationComponent;
+import io.pivotal.racquetandroid.event.DismissRecordMatchEvent;
+import io.pivotal.racquetandroid.event.MatchUpdatedEvent;
 import io.pivotal.racquetandroid.model.Club;
 import io.pivotal.racquetandroid.model.response.Matches;
 import io.pivotal.racquetandroid.util.ModelBuilder;
@@ -26,6 +30,9 @@ public class FeedFragmentTest {
 
     @Inject
     RacquetRestService restService;
+
+    @Inject
+    Bus bus;
 
     MockRacquetRestService mockRestService;
 
@@ -60,5 +67,16 @@ public class FeedFragmentTest {
         fragment.onRefresh();
 
         assertThat(fragment.adapter.getItemCount()).isEqualTo(5);
+    }
+
+    @Test
+    public void onMatchUpdatedEvent_shouldInsertMatch() throws Exception {
+        SupportFragmentTestUtil.startFragment(fragment);
+
+        bus.post(new MatchUpdatedEvent(ModelBuilder.getMatch("winner", "loser")));
+
+        assertThat(fragment.adapter.getItemCount()).isEqualTo(1);
+        bus.post(new DismissRecordMatchEvent());
+        assertThat(fragment.adapter.getItemCount()).isEqualTo(1);
     }
 }
