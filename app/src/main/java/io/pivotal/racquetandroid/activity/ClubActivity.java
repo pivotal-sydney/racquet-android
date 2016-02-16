@@ -72,7 +72,7 @@ public class ClubActivity extends AppCompatActivity {
 
     private void showRecordMatch() {
         recordMatchView.setVisibility(View.VISIBLE);
-        ViewAnimationUtils.createCircularReveal(recordMatchView, (button.getLeft() + button.getRight()) / 2, (button.getBottom() + button.getTop()) / 2, 0, Math.max(recordMatchView.getWidth(), recordMatchView.getHeight())).setDuration(250).start();
+        ViewAnimationUtils.createCircularReveal(recordMatchView, (button.getLeft() + button.getRight()) / 2, (button.getBottom() + button.getTop()) / 2, 0, Math.max(recordMatchView.getWidth(), recordMatchView.getHeight())).setDuration(400).start();
         button.hide();
     }
 
