@@ -4,4 +4,7 @@
         <attr name="profile_name" format="string"/>
         <attr name="profile_image_src" format="string"/>
     </declare-styleable>
+    <declare-styleable name="DividerTextView">
+        <attr name="text" format="string" />
+    </declare-styleable>
 </resources>
