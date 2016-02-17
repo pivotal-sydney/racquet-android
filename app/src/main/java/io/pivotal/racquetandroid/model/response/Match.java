@@ -4,24 +4,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Match {
-    private Player winnerData = new Player();
-    private Player loserData = new Player();
+    private Player winner = new Player();
+    private Player loser = new Player();
     private int points;
 
-    public Player getWinnerData() {
-        return winnerData;
+    public Player getWinner() {
+        return winner;
     }
 
-    public void setWinnerData(Player winnerData) {
-        this.winnerData = winnerData;
+    public void setWinner(Player winner) {
+        this.winner = winner;
     }
 
-    public Player getLoserData() {
-        return loserData;
+    public Player getLoser() {
+        return loser;
     }
 
-    public void setLoserData(Player loserData) {
-        this.loserData = loserData;
+    public void setLoser(Player loser) {
+        this.loser = loser;
     }
 
     public int getPoints() {

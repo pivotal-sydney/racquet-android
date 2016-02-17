@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.pivotal.racquetandroid.model.Club;
+import io.pivotal.racquetandroid.model.Clubs;
 import io.pivotal.racquetandroid.model.Logo;
 import io.pivotal.racquetandroid.model.StandardLogo;
 import io.pivotal.racquetandroid.model.response.Match;
-import io.pivotal.racquetandroid.model.response.Matches;
 import io.pivotal.racquetandroid.model.response.Player;
 
 public class ModelBuilder {
@@ -26,16 +26,18 @@ public class ModelBuilder {
         return club;
     }
 
-    public static List<Club> getClubs(int size, String name) {
-        List<Club> clubs = new ArrayList<>();
+    public static Clubs getClubs(int size, String name) {
+        Clubs clubs = new Clubs();
+        List<Club> clubList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            clubs.add(getClub(i, name + i));
+            clubList.add(getClub(i, name + i));
         }
+        clubs.setClubs(clubList);
         return clubs;
     }
 
-    public static Matches getMatches(int size, String playerOne, String playerTwo) {
-        List<Match> matchList = new ArrayList<>();
+    public static List<Match> getMatches(int size, String playerOne, String playerTwo) {
+        List<Match> matches = new ArrayList<>();
 
         for (int i = 0; i < size; i++) {
             Match match;
@@ -44,17 +46,15 @@ public class ModelBuilder {
             } else {
                 match = ModelBuilder.getMatch(playerTwo, playerOne);
             }
-            matchList.add(match);
+            matches.add(match);
         }
-        Matches matches = new Matches();
-        matches.setResults(matchList);
         return matches;
     }
 
     public static Match getMatch(String playerOne, String playerTwo) {
         Match match = new Match();
-        match.setWinnerData(getPlayer(playerOne));
-        match.setLoserData(getPlayer(playerTwo));
+        match.setWinner(getPlayer(playerOne));
+        match.setLoser(getPlayer(playerTwo));
         return match;
     }
 

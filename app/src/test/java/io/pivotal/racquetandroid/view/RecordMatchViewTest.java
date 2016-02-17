@@ -82,7 +82,7 @@ public class RecordMatchViewTest {
         ArgumentCaptor<MatchUpdatedEvent> captor = ArgumentCaptor.forClass(MatchUpdatedEvent.class);
         verify(bus, atLeastOnce()).post(captor.capture());
 
-        assertThat(captor.getAllValues().get(0).getMatch()).isEqualTo(match);
+        assertThat(captor.getAllValues().get(2).getMatch()).isEqualTo(match);
     }
 
     @Test

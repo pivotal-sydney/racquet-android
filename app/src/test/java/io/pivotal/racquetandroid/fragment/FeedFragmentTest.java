@@ -9,6 +9,8 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.pivotal.racquetandroid.BuildConfig;
@@ -19,7 +21,7 @@ import io.pivotal.racquetandroid.TestApplicationComponent;
 import io.pivotal.racquetandroid.event.DismissRecordMatchEvent;
 import io.pivotal.racquetandroid.event.MatchUpdatedEvent;
 import io.pivotal.racquetandroid.model.Club;
-import io.pivotal.racquetandroid.model.response.Matches;
+import io.pivotal.racquetandroid.model.response.Match;
 import io.pivotal.racquetandroid.util.ModelBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,7 +50,7 @@ public class FeedFragmentTest {
 
     @Test
     public void onViewCreated_shouldFetchMatches() {
-        Matches matches = ModelBuilder.getMatches(5, "p1", "p2");
+        List<Match> matches = ModelBuilder.getMatches(5, "p1", "p2");
         mockRestService.addResponse(matches, true);
         SupportFragmentTestUtil.startFragment(fragment);
 
@@ -61,7 +63,7 @@ public class FeedFragmentTest {
 
         assertThat(fragment.adapter.getItemCount()).isEqualTo(0);
 
-        Matches matches = ModelBuilder.getMatches(5, "p1", "p2");
+        List<Match> matches = ModelBuilder.getMatches(5, "p1", "p2");
         mockRestService.addResponse(matches, true);
 
         fragment.onRefresh();

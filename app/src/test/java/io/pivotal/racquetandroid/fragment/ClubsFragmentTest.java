@@ -7,9 +7,6 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import io.pivotal.racquetandroid.BuildConfig;
@@ -17,7 +14,7 @@ import io.pivotal.racquetandroid.MockRacquetRestService;
 import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.RacquetRestService;
 import io.pivotal.racquetandroid.TestApplicationComponent;
-import io.pivotal.racquetandroid.model.Club;
+import io.pivotal.racquetandroid.model.Clubs;
 import io.pivotal.racquetandroid.util.ModelBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,7 +40,7 @@ public class ClubsFragmentTest {
 
     @Test
     public void onViewCreated_shouldPopulateAdapter() {
-        List<Club> clubs = ModelBuilder.getClubs(4, "Club Name");
+        Clubs clubs = ModelBuilder.getClubs(4, "Club Name");
         mockRestService.addResponse(clubs, true);
         SupportFragmentTestUtil.startFragment(fragment);
         assertThat(fragment.adapter.getItemCount()).isEqualTo(4);
@@ -54,7 +51,7 @@ public class ClubsFragmentTest {
         SupportFragmentTestUtil.startFragment(fragment);
         assertThat(fragment.adapter.getItemCount()).isEqualTo(0);
 
-        List<Club> clubs = ModelBuilder.getClubs(4, "Club Name");
+        Clubs clubs = ModelBuilder.getClubs(4, "Club Name");
         mockRestService.addResponse(clubs, true);
         fragment.onRefresh();
 

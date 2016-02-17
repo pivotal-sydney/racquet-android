@@ -6,27 +6,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.pivotal.racquetandroid.R;
 import io.pivotal.racquetandroid.model.response.Match;
-import io.pivotal.racquetandroid.model.response.Matches;
 import io.pivotal.racquetandroid.view.ProfileView;
 
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesViewHolder> {
 
-    private Matches matches;
+    private List<Match> matches;
 
     public MatchesAdapter() {
-        this(new Matches());
+        this(new ArrayList<Match>());
     }
 
-    public MatchesAdapter(Matches matches) {
+    public MatchesAdapter(List<Match> matches) {
         this.matches = matches;
         setHasStableIds(true);
     }
 
-    public void setMatches(Matches matches) {
+    public void setMatches(List<Match> matches) {
         this.matches = matches;
         notifyDataSetChanged();
     }
@@ -38,21 +40,21 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
 
     @Override
     public void onBindViewHolder(MatchesViewHolder holder, int position) {
-        holder.bind(matches.getResults().get(position));
+        holder.bind(matches.get(position));
     }
 
     @Override
     public long getItemId(int position) {
-        return matches.getResults().get(position).hashCode();
+        return matches.get(position).hashCode();
     }
 
     @Override
     public int getItemCount() {
-        return matches.getResults().size();
+        return matches.size();
     }
 
     public void addMatch(Match match) {
-        matches.getResults().add(0, match);
+        matches.add(0, match);
         notifyDataSetChanged();
     }
 
@@ -70,10 +72,10 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
         }
 
         public void bind(Match match) {
-            winner.setProfileName(match.getWinnerData().getName());
-            loser.setProfileName(match.getLoserData().getName());
-            winner.setProfileImageUrl(match.getWinnerData().getProfileImageUrl());
-            loser.setProfileImageUrl(match.getLoserData().getProfileImageUrl());
+            winner.setProfileName(match.getWinner().getName());
+            loser.setProfileName(match.getLoser().getName());
+            winner.setProfileImageUrl(match.getWinner().getProfileImageUrl());
+            loser.setProfileImageUrl(match.getLoser().getProfileImageUrl());
         }
     }
 }

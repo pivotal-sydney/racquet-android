@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -25,7 +27,6 @@ import io.pivotal.racquetandroid.adapter.MatchesAdapter;
 import io.pivotal.racquetandroid.event.MatchUpdatedEvent;
 import io.pivotal.racquetandroid.model.Club;
 import io.pivotal.racquetandroid.model.response.Match;
-import io.pivotal.racquetandroid.model.response.Matches;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -86,17 +87,17 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     void populateResults() {
-        Call<Matches> call = racquetRestService.getMatches(club.getId());
-        call.enqueue(new Callback<Matches>() {
+        Call<List<Match>> call = racquetRestService.getMatches(club.getId());
+        call.enqueue(new Callback<List<Match>>() {
             @Override
-            public void onResponse(Call<Matches> call, Response<Matches> response) {
+            public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
                 adapter.setMatches(response.body());
                 list.setAdapter(adapter);
                 swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
-            public void onFailure(Call<Matches> call, Throwable t) {
+            public void onFailure(Call<List<Match>> call, Throwable t) {
                 Toast.makeText(getContext(), "Failed to fetch match results", Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
             }

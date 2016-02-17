@@ -6,10 +6,9 @@ import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
 
-import io.pivotal.racquetandroid.model.Club;
+import io.pivotal.racquetandroid.model.Clubs;
 import io.pivotal.racquetandroid.model.request.MatchResultRequest;
 import io.pivotal.racquetandroid.model.response.Match;
-import io.pivotal.racquetandroid.model.response.Matches;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Path;
@@ -24,10 +23,10 @@ public class MockRacquetRestService implements RacquetRestService {
     }
 
     @Override
-    public Call<List<Club>> getClubs() {
+    public Call<Clubs> getClubs() {
         Pair<Object, Boolean> pair = responses.peek();
         if (pair != null && pair.second) {
-            return Calls.response(getListCallResponse(Club.class));
+            return Calls.response(getSingleCallResponse(Clubs.class));
         }
         return Calls.failure(null);
     }
@@ -43,10 +42,10 @@ public class MockRacquetRestService implements RacquetRestService {
     }
 
     @Override
-    public Call<Matches> getMatches(@Path("clubId") int clubId) {
+    public Call<List<Match>> getMatches(@Path("clubId") int clubId) {
         Pair<Object, Boolean> pair = responses.peek();
         if (pair != null && pair.second) {
-            return Calls.response(getSingleCallResponse(Matches.class));
+            return Calls.response(getListCallResponse(Match.class));
         }
         return Calls.failure(null);
     }

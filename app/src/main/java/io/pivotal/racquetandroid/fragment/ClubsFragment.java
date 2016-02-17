@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -24,6 +23,7 @@ import io.pivotal.racquetandroid.RacquetRestService;
 import io.pivotal.racquetandroid.adapter.ClubItemDecorator;
 import io.pivotal.racquetandroid.adapter.ClubsAdapter;
 import io.pivotal.racquetandroid.model.Club;
+import io.pivotal.racquetandroid.model.Clubs;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,19 +69,19 @@ public class ClubsFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     }
 
     private void populateClubs() {
-        Call<List<Club>> call = service.getClubs();
-        call.enqueue(new Callback<List<Club>>() {
+        Call<Clubs> call = service.getClubs();
+        call.enqueue(new Callback<Clubs>() {
             @Override
-            public void onResponse(Call<List<Club>> call, Response<List<Club>> response) {
+            public void onResponse(Call<Clubs> call, Response<Clubs> response) {
                 if (response.body() != null) {
-                    adapter.setClubs(response.body());
+                    adapter.setClubs(response.body().getClubs());
                     list.setAdapter(adapter);
                 }
                 swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
-            public void onFailure(Call<List<Club>> call, Throwable t) {
+            public void onFailure(Call<Clubs> call, Throwable t) {
                 Toast.makeText(getActivity(), "Failed!   " + t, Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
             }

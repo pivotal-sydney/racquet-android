@@ -14,12 +14,14 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.pivotal.racquetandroid.BuildConfig;
 import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.TestApplicationComponent;
-import io.pivotal.racquetandroid.model.response.Matches;
+import io.pivotal.racquetandroid.model.response.Match;
 import io.pivotal.racquetandroid.util.ModelBuilder;
 
 import static org.assertj.android.api.Assertions.assertThat;
@@ -42,7 +44,7 @@ public class MatchesAdapterTest {
     @Before
     public void setup() {
         ((TestApplicationComponent) RacquetApplication.getApplication().getApplicationComponent()).inject(this);
-        Matches matches = ModelBuilder.getMatches(5, "player1", "player2");
+        List<Match> matches = ModelBuilder.getMatches(5, "player1", "player2");
         adapter = new MatchesAdapter(matches);
     }
 

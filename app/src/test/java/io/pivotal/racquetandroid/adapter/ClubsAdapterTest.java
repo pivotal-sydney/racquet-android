@@ -44,7 +44,7 @@ public class ClubsAdapterTest {
 
     @Test
     public void onCreate_andBindsData() {
-        List<Club> clubs = ModelBuilder.getClubs(1, "Club Name");
+        List<Club> clubs = ModelBuilder.getClubs(1, "Club Name").getClubs();
         adapter = new ClubsAdapter(clubs);
 
         ClubsAdapter.ClubViewHolder holder = adapter.onCreateViewHolder(new LinearLayout(RuntimeEnvironment.application), 0);
@@ -55,7 +55,7 @@ public class ClubsAdapterTest {
 
     @Test
     public void onClick_startsClubActivity() {
-        List<Club> clubs = ModelBuilder.getClubs(3, "Club Name");
+        List<Club> clubs = ModelBuilder.getClubs(3, "Club Name").getClubs();
         adapter = new ClubsAdapter(clubs);
 
         ClubsAdapter.ClubViewHolder holder = adapter.onCreateViewHolder(new LinearLayout(RuntimeEnvironment.application), 1);
@@ -70,7 +70,7 @@ public class ClubsAdapterTest {
 
     @Test
     public void itemCount_matchesDataSize() {
-        List<Club> clubs = ModelBuilder.getClubs(3, "Club Name");
+        List<Club> clubs = ModelBuilder.getClubs(3, "Club Name").getClubs();
         adapter = new ClubsAdapter(clubs);
         assertThat(adapter.getItemCount()).isEqualTo(3);
     }
