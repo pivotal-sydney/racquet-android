@@ -31,6 +31,7 @@ public class TestApplicationModule {
     public RequestCreator providesRequestCreator() {
         RequestCreator requestCreator = mock(RequestCreator.class);
         when(requestCreator.placeholder(anyInt())).thenReturn(requestCreator);
+        when(requestCreator.error(anyInt())).thenReturn(requestCreator);
         when(requestCreator.transform(any(Transformation.class))).thenReturn(requestCreator);
         return requestCreator;
     }

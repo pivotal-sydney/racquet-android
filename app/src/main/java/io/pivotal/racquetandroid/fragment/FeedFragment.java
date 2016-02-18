@@ -49,6 +49,7 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     MatchesAdapter adapter;
     private EventHandler eventHandler;
+    private Call<List<Match>> call;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,12 +70,12 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onResume() {
         super.onResume();
         bus.register(eventHandler);
-        populateResults();
     }
 
     @Override
     public void onPause() {
         bus.unregister(eventHandler);
+        call.cancel();
         super.onPause();
     }
 
@@ -84,10 +85,11 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         ButterKnife.bind(this, view);
         list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         swipeRefreshLayout.setOnRefreshListener(this);
+        populateResults();
     }
 
     void populateResults() {
-        Call<List<Match>> call = racquetRestService.getMatches(club.getId());
+        call = racquetRestService.getMatches(club.getId());
         call.enqueue(new Callback<List<Match>>() {
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {

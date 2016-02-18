@@ -10,30 +10,13 @@ public class Player {
     private int wins;
     private int losses;
     private int points;
-    private long winningPercentage;
-    private boolean trendingUp;
+    private double winningPercentage;
 
-    public boolean isTreandingDown() {
-        return treandingDown;
-    }
-
-    public void setTreandingDown(boolean treandingDown) {
-        this.treandingDown = treandingDown;
-    }
-
-    public boolean isTrendingUp() {
-        return trendingUp;
-    }
-
-    public void setTrendingUp(boolean trendingUp) {
-        this.trendingUp = trendingUp;
-    }
-
-    public long getWinningPercentage() {
+    public double getWinningPercentage() {
         return winningPercentage;
     }
 
-    public void setWinningPercentage(long winningPercentage) {
+    public void setWinningPercentage(double winningPercentage) {
         this.winningPercentage = winningPercentage;
     }
 
@@ -61,7 +44,6 @@ public class Player {
         this.wins = wins;
     }
 
-    private boolean treandingDown;
 
     public String getName() {
         return name;

@@ -9,4 +9,10 @@
     <string name="boom">Boom!</string>
     <string name="record_match">Record a new match result</string>
     <string name="submit_match">Go</string>
+    <string name="major_leagues">Major Leagues</string>
+    <string name="wins">%1$d WINS</string>
+    <string name="losses">%1$d LOSSES</string>
+    <string name="points">%1$d pts</string>
+    <string name="minor_leagues">Minor Leagues</string>
+    <string name="minor_description">Where all the boys and girls play</string>
 </resources>

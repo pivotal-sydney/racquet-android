@@ -24,7 +24,7 @@ public class ClubPagerAdapter extends FragmentPagerAdapter {
             return FeedFragment.newInstance(club);
         }
         else{
-            return LeaderboardFragment.newInstance();
+            return LeaderboardFragment.newInstance(club);
         }
     }
 

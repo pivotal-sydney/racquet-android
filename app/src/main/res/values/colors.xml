@@ -7,4 +7,6 @@
     <color name="green_outline">#DAECD7</color>
     <color name="black">#333333</color>
     <color name="black_translucent">#96333333</color>
+    <color name="black_text">#2D2C28</color>
+    <color name="grey_text">#A6A6A6</color>
 </resources>

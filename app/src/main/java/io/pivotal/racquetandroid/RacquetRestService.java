@@ -3,6 +3,7 @@ package io.pivotal.racquetandroid;
 import java.util.List;
 
 import io.pivotal.racquetandroid.model.Clubs;
+import io.pivotal.racquetandroid.model.Leaderboard;
 import io.pivotal.racquetandroid.model.request.MatchResultRequest;
 import io.pivotal.racquetandroid.model.response.Match;
 import retrofit2.Call;
@@ -19,5 +20,8 @@ public interface RacquetRestService {
     Call<Match> postMatch(@Path("clubId") int clubId, @Body MatchResultRequest request);
 
     @GET("/api/{clubId}/matches")
-    Call<List<Match>> getMatches(@Path("clubId") int clubSlug);
+    Call<List<Match>> getMatches(@Path("clubId") int clubId);
+
+    @GET("/api/{clubId}/leaderboard")
+    Call<Leaderboard> getLeaderboard(@Path("clubId") int clubId);
 }
