@@ -23,6 +23,7 @@ import io.pivotal.racquetandroid.R;
 import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.RacquetRestService;
 import io.pivotal.racquetandroid.adapter.MatchesAdapter;
+import io.pivotal.racquetandroid.event.FetchedMatchesEvent;
 import io.pivotal.racquetandroid.event.MatchUpdatedEvent;
 import io.pivotal.racquetandroid.model.Club;
 import io.pivotal.racquetandroid.model.response.Match;
@@ -45,10 +46,17 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     Bus bus;
 
     private Club club;
-
-    MatchesAdapter adapter;
     private EventHandler eventHandler;
     private Call<List<Match>> call;
+    MatchesAdapter adapter;
+
+    public static FeedFragment newInstance(Club club) {
+        FeedFragment fragment = new FeedFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(CLUB_KEY, club);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,12 +95,18 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         populateResults();
     }
 
+    @Override
+    public void onRefresh() {
+        populateResults();
+    }
+
     void populateResults() {
         call = racquetRestService.getMatches(club.getId());
         call.enqueue(new Callback<List<Match>>() {
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
                 adapter.setMatches(response.body());
+                bus.post(new FetchedMatchesEvent(response.body()));
                 list.setAdapter(adapter);
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -103,19 +117,6 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-    }
-
-    public static FeedFragment newInstance(Club club) {
-        FeedFragment fragment = new FeedFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(CLUB_KEY, club);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    @Override
-    public void onRefresh() {
-        populateResults();
     }
 
     class EventHandler {

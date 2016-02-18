@@ -17,6 +17,10 @@ import android.view.ViewAnimationUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -25,7 +29,11 @@ import io.pivotal.racquetandroid.R;
 import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.adapter.ClubPagerAdapter;
 import io.pivotal.racquetandroid.event.DismissRecordMatchEvent;
+import io.pivotal.racquetandroid.event.FetchedMatchesEvent;
+import io.pivotal.racquetandroid.event.MatchUpdatedEvent;
 import io.pivotal.racquetandroid.model.Club;
+import io.pivotal.racquetandroid.model.response.Match;
+import io.pivotal.racquetandroid.model.response.Player;
 import io.pivotal.racquetandroid.view.RecordMatchView;
 
 public class ClubActivity extends AppCompatActivity {
@@ -54,6 +62,8 @@ public class ClubActivity extends AppCompatActivity {
 
     private EventHandler eventHandler;
 
+    Set<Player> players = new HashSet<>();
+
     AnimatorListenerAdapter animatorListenerAdapter = new AnimatorListenerAdapter() {
         @Override
         public void onAnimationEnd(Animator animation) {
@@ -62,6 +72,19 @@ public class ClubActivity extends AppCompatActivity {
             button.show();
         }
     };
+
+    public static void startActivity(Context context, Club club) {
+        Intent intent = getIntent(context, club);
+        context.startActivity(intent);
+    }
+
+    public static Intent getIntent(Context context, Club club) {
+        Intent intent = new Intent(context, ClubActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(CLUB_KEY, club);
+        intent.putExtras(bundle);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +131,24 @@ public class ClubActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (recordMatchView.getVisibility() == View.VISIBLE) {
+            hideRecordMatch();
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void showRecordMatch() {
         recordMatchView.setVisibility(View.VISIBLE);
         ViewAnimationUtils.createCircularReveal(recordMatchView, (button.getLeft() + button.getRight()) / 2, (button.getBottom() + button.getTop()) / 2, 0, Math.max(recordMatchView.getWidth(), recordMatchView.getHeight())).setDuration(300).start();
@@ -120,26 +161,12 @@ public class ClubActivity extends AppCompatActivity {
         reveal.start();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
+    private void populatePlayers(List<Match> matches) {
+        for (int i = 0; i < matches.size(); i++) {
+            players.add(matches.get(i).getWinner());
+            players.add(matches.get(i).getLoser());
         }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public static void startActivity(Context context, Club club) {
-        Intent intent = getIntent(context, club);
-        context.startActivity(intent);
-    }
-
-    public static Intent getIntent(Context context, Club club) {
-        Intent intent = new Intent(context, ClubActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(CLUB_KEY, club);
-        intent.putExtras(bundle);
-        return intent;
+        recordMatchView.setPlayers(players);
     }
 
     class EventHandler {
@@ -147,6 +174,19 @@ public class ClubActivity extends AppCompatActivity {
         @SuppressWarnings("unused")
         public void onDismissRecordMatchEvent(DismissRecordMatchEvent event) {
             hideRecordMatch();
+        }
+
+        @Subscribe
+        @SuppressWarnings("unused")
+        public void onMatchUpdatedEvent(MatchUpdatedEvent event) {
+            players.add(event.getMatch().getWinner());
+            players.add(event.getMatch().getLoser());
+        }
+
+        @Subscribe
+        @SuppressWarnings("unused")
+        public void onFetchedMatchesEvent(FetchedMatchesEvent event) {
+            populatePlayers(event.getMatches());
         }
     }
 }

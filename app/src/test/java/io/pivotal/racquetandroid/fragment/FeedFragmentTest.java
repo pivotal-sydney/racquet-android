@@ -19,12 +19,16 @@ import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.RacquetRestService;
 import io.pivotal.racquetandroid.TestApplicationComponent;
 import io.pivotal.racquetandroid.event.DismissRecordMatchEvent;
+import io.pivotal.racquetandroid.event.FetchedMatchesEvent;
 import io.pivotal.racquetandroid.event.MatchUpdatedEvent;
 import io.pivotal.racquetandroid.model.Club;
 import io.pivotal.racquetandroid.model.response.Match;
 import io.pivotal.racquetandroid.util.ModelBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
 
 @Config(constants = BuildConfig.class)
 @RunWith(RobolectricGradleTestRunner.class)
@@ -69,6 +73,8 @@ public class FeedFragmentTest {
         fragment.onRefresh();
 
         assertThat(fragment.adapter.getItemCount()).isEqualTo(5);
+
+        verify(bus, atLeastOnce()).post(isA(FetchedMatchesEvent.class));
     }
 
     @Test

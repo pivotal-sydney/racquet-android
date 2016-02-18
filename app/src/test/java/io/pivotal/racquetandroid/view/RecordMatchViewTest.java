@@ -1,5 +1,6 @@
 package io.pivotal.racquetandroid.view;
 
+import android.view.View;
 import android.widget.TextView;
 
 import com.squareup.otto.Bus;
@@ -83,6 +84,9 @@ public class RecordMatchViewTest {
         verify(bus, atLeastOnce()).post(captor.capture());
 
         assertThat(captor.getAllValues().get(2).getMatch()).isEqualTo(match);
+
+        assertThat(view.winner.getText().toString()).isEmpty();
+        assertThat(view.loser.getText().toString()).isEmpty();
     }
 
     @Test
@@ -96,4 +100,14 @@ public class RecordMatchViewTest {
         assertThat(captor.getAllValues().get(0)).isInstanceOf(DismissRecordMatchEvent.class);
         assertThat(captor.getAllValues().get(2)).isInstanceOf(DismissRecordMatchEvent.class);
     }
+
+    @Test
+    public void settingVisibility_shouldRequestFocus() {
+        view.winner.clearFocus();
+        assertThat(view.winner).isNotFocused();
+        view.setVisibility(View.VISIBLE);
+        assertThat(view.winner).isFocused();
+    }
+
+
 }

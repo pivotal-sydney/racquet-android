@@ -5,13 +5,18 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.squareup.otto.Bus;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -20,12 +25,14 @@ import butterknife.ButterKnife;
 import io.pivotal.racquetandroid.R;
 import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.RacquetRestService;
+import io.pivotal.racquetandroid.adapter.FilteredPlayerAdapter;
 import io.pivotal.racquetandroid.event.DismissRecordMatchEvent;
 import io.pivotal.racquetandroid.event.MatchUpdatedEvent;
 import io.pivotal.racquetandroid.model.Club;
 import io.pivotal.racquetandroid.model.request.MatchResult;
 import io.pivotal.racquetandroid.model.request.MatchResultRequest;
 import io.pivotal.racquetandroid.model.response.Match;
+import io.pivotal.racquetandroid.model.response.Player;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,10 +40,10 @@ import retrofit2.Response;
 public class RecordMatchView extends LinearLayout {
 
     @Bind(R.id.winner)
-    EditText winner;
+    AutoCompleteTextView winner;
 
     @Bind(R.id.loser)
-    EditText loser;
+    AutoCompleteTextView loser;
 
     @Bind(R.id.submit)
     Button submit;
@@ -52,6 +59,7 @@ public class RecordMatchView extends LinearLayout {
 
     private Club club;
 
+    private FilteredPlayerAdapter adapter;
 
     public RecordMatchView(Context context) {
         super(context);
@@ -72,7 +80,57 @@ public class RecordMatchView extends LinearLayout {
         ButterKnife.bind(this);
         RacquetApplication.getApplication().getApplicationComponent().inject(this);
 
-        submit.setOnClickListener(new View.OnClickListener() {
+        adapter = new FilteredPlayerAdapter(new HashSet<Player>());
+        winner.setAdapter(adapter);
+        loser.setAdapter(adapter);
+
+        setupListeners();
+    }
+
+
+    public void setPlayers(Set<Player> players) {
+        adapter.setPlayers(players);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return true;
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        if (visibility == VISIBLE) {
+            winner.requestFocus();
+            InputMethodManager keyboard = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            keyboard.showSoftInput(winner, 0);
+            super.setVisibility(visibility);
+        } else {
+            super.setVisibility(visibility);
+            InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getWindowToken(), 0);
+        }
+    }
+
+    private void setupListeners() {
+        winner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Player player = (Player) adapter.getItem(position);
+                winner.setText(view.getContext().getString(R.string.twitter_handle, player.getTwitterHandle()));
+                loser.requestFocus();
+            }
+        });
+
+        loser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Player player = (Player) adapter.getItem(position);
+                loser.setText(view.getContext().getString(R.string.twitter_handle, player.getTwitterHandle()));
+                loser.clearFocus();
+            }
+        });
+
+        submit.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 bus.post(new DismissRecordMatchEvent());
@@ -95,6 +153,8 @@ public class RecordMatchView extends LinearLayout {
                     public void onFailure(Call<Match> call, Throwable t) {
                     }
                 });
+                winner.setText("");
+                loser.setText("");
             }
         });
 
@@ -104,10 +164,5 @@ public class RecordMatchView extends LinearLayout {
                 bus.post(new DismissRecordMatchEvent());
             }
         });
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return true;
     }
 }

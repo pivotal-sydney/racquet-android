@@ -1,6 +1,7 @@
 package io.pivotal.racquetandroid.activity;
 
 import android.content.Intent;
+import android.view.View;
 
 import com.squareup.otto.Bus;
 
@@ -14,12 +15,16 @@ import org.robolectric.annotation.Config;
 import org.robolectric.fakes.RoboMenuItem;
 import org.robolectric.util.ActivityController;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.pivotal.racquetandroid.BuildConfig;
 import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.TestApplicationComponent;
+import io.pivotal.racquetandroid.event.FetchedMatchesEvent;
 import io.pivotal.racquetandroid.model.Club;
+import io.pivotal.racquetandroid.model.response.Match;
 import io.pivotal.racquetandroid.util.ModelBuilder;
 
 import static org.assertj.android.api.Assertions.assertThat;
@@ -77,5 +82,24 @@ public class ClubActivityTest {
         activity.animatorListenerAdapter.onAnimationEnd(null);
         assertThat(activity.recordMatchView).isInvisible();
         assertThat(activity.button).isVisible();
+    }
+
+    @Test
+    public void onFetchedMatchesEvent_shouldPopulatePlayersSet() {
+        List<Match> matches = ModelBuilder.getMatches(10, "player1", "player2");
+        bus.post(new FetchedMatchesEvent(matches));
+
+        assertThat(activity.players).hasSize(2);
+    }
+
+    @Test
+    public void onBackPressed_whenRecordMatchVisible_shouldHideRecordMatch() {
+        activity.recordMatchView.setVisibility(View.VISIBLE);
+        activity.onBackPressed();
+        // Mimic RecordMatchView going invisible
+        assertThat(activity).isNotFinishing();
+        activity.recordMatchView.setVisibility(View.INVISIBLE);
+        activity.onBackPressed();
+        assertThat(activity).isFinishing();
     }
 }

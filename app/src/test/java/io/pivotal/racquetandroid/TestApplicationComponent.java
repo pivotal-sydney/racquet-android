@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import io.pivotal.racquetandroid.activity.ClubActivityTest;
 import io.pivotal.racquetandroid.adapter.ClubsAdapterTest;
+import io.pivotal.racquetandroid.adapter.FilteredPlayerAdapterTest;
 import io.pivotal.racquetandroid.adapter.LeaderboardAdapterTest;
 import io.pivotal.racquetandroid.adapter.MatchesAdapterTest;
 import io.pivotal.racquetandroid.fragment.ClubsFragmentTest;
@@ -25,4 +26,5 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(ClubActivityTest clubActivityTest);
     void inject(LeaderboardAdapterTest leaderboardAdapterTest);
     void inject(LeaderboardFragmentTest leaderboardFragmentTest);
+    void inject(FilteredPlayerAdapterTest filteredPlayerAdapterTest);
 }

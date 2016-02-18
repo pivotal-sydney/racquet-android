@@ -68,4 +68,14 @@ public class Player {
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
     }
+
+    @Override
+    public boolean equals(Object otherPlayer) {
+        return otherPlayer instanceof Player && ((Player)otherPlayer).twitterHandle.equals(twitterHandle);
+    }
+
+    @Override
+    public int hashCode() {
+        return twitterHandle.hashCode();
+    }
 }

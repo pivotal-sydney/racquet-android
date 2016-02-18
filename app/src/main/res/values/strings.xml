@@ -15,4 +15,5 @@
     <string name="points">%1$d pts</string>
     <string name="minor_leagues">Minor Leagues</string>
     <string name="minor_description">Where all the boys and girls play</string>
+    <string name="twitter_handle">\@%1$s</string>
 </resources>

@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import io.pivotal.racquetandroid.activity.ClubActivity;
+import io.pivotal.racquetandroid.adapter.FilteredPlayerAdapter;
 import io.pivotal.racquetandroid.adapter.LeaderboardAdapter;
 import io.pivotal.racquetandroid.fragment.ClubsFragment;
 import io.pivotal.racquetandroid.fragment.FeedFragment;
@@ -21,4 +22,5 @@ public interface ApplicationComponent {
     void inject(ClubActivity clubActivity);
     void inject(LeaderboardAdapter leaderboardAdapter);
     void inject(LeaderboardFragment leaderboardFragment);
+    void inject(FilteredPlayerAdapter filteredPlayerAdapter);
 }
