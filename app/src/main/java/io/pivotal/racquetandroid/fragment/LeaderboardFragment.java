@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -18,6 +21,7 @@ import io.pivotal.racquetandroid.R;
 import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.RacquetRestService;
 import io.pivotal.racquetandroid.adapter.LeaderboardAdapter;
+import io.pivotal.racquetandroid.event.MatchUpdatedEvent;
 import io.pivotal.racquetandroid.model.Club;
 import io.pivotal.racquetandroid.model.Leaderboard;
 import retrofit2.Call;
@@ -29,16 +33,21 @@ public class LeaderboardFragment extends Fragment implements SwipeRefreshLayout.
     private static final String CLUB_KEY = "club_key";
 
     LeaderboardAdapter adapter;
+    private EventHandler eventHandler;
 
     @Inject
     RacquetRestService racquetRestService;
     private Club club;
+
+    @Inject
+    Bus bus;
 
     @Bind(R.id.list)
     RecyclerView list;
 
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+    private Call<Leaderboard> call;
 
     public static LeaderboardFragment newInstance(Club club) {
         LeaderboardFragment fragment = new LeaderboardFragment();
@@ -55,12 +64,26 @@ public class LeaderboardFragment extends Fragment implements SwipeRefreshLayout.
         RacquetApplication.getApplication().getApplicationComponent().inject(this);
         club = (Club) getArguments().getSerializable(CLUB_KEY);
         adapter = new LeaderboardAdapter();
+        eventHandler = new EventHandler();
+        bus.register(eventHandler);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_leaderboard, null);
+    }
+
+    @Override
+    public void onDestroy() {
+        bus.unregister(eventHandler);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        call.cancel();
+        super.onPause();
     }
 
     @Override
@@ -73,7 +96,7 @@ public class LeaderboardFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     private void populateLeaderboard() {
-        Call<Leaderboard> call = racquetRestService.getLeaderboard(club.getId());
+        call = racquetRestService.getLeaderboard(club.getId());
         call.enqueue(new Callback<Leaderboard>() {
             @Override
             public void onResponse(Call<Leaderboard> call, Response<Leaderboard> response) {
@@ -94,5 +117,13 @@ public class LeaderboardFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onRefresh() {
         populateLeaderboard();
+    }
+
+    class EventHandler {
+        @Subscribe
+        @SuppressWarnings("unused")
+        public void onMatchUpdatedEvent(MatchUpdatedEvent event) {
+            populateLeaderboard();
+        }
     }
 }

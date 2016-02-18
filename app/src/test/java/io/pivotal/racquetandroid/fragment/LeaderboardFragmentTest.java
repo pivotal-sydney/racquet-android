@@ -1,5 +1,7 @@
 package io.pivotal.racquetandroid.fragment;
 
+import com.squareup.otto.Bus;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,11 +18,14 @@ import io.pivotal.racquetandroid.MockRacquetRestService;
 import io.pivotal.racquetandroid.RacquetApplication;
 import io.pivotal.racquetandroid.RacquetRestService;
 import io.pivotal.racquetandroid.TestApplicationComponent;
+import io.pivotal.racquetandroid.event.MatchUpdatedEvent;
 import io.pivotal.racquetandroid.model.Club;
 import io.pivotal.racquetandroid.model.Ranking;
 import io.pivotal.racquetandroid.util.ModelBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 
 @Config(constants = BuildConfig.class)
 @RunWith(RobolectricGradleTestRunner.class)
@@ -30,6 +35,9 @@ public class LeaderboardFragmentTest {
 
     @Inject
     RacquetRestService racquetRestService;
+
+    @Inject
+    Bus bus;
 
     MockRacquetRestService mockRacquetRestService;
 
@@ -59,6 +67,16 @@ public class LeaderboardFragmentTest {
         mockRacquetRestService.addResponse(ModelBuilder.getLeaderboard(majors, null), true);
         fragment.onRefresh();
         assertThat(fragment.adapter.getItemCount()).isEqualTo(7);
+    }
+
+    @Test
+    public void onMatchUpdatedEvent_shouldRefreshLeaderboard() {
+        SupportFragmentTestUtil.startFragment(fragment);
+
+        reset(mockRacquetRestService);
+        bus.post(new MatchUpdatedEvent(null));
+
+        verify(mockRacquetRestService).getLeaderboard(1);
     }
 
 }

@@ -23,7 +23,7 @@ public class TestApplicationModule {
     @Provides
     @Singleton
     public RacquetRestService providesRacquetRestService() {
-        return new MockRacquetRestService();
+        return spy(new MockRacquetRestService());
     }
 
     @Provides

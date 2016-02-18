@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -31,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private static String CLUB_KEY = "club_name_key";
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -58,6 +57,7 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         club = (Club) getArguments().getSerializable(CLUB_KEY);
         adapter = new MatchesAdapter();
         eventHandler = new EventHandler();
+        bus.register(eventHandler);
     }
 
     @Nullable
@@ -67,14 +67,13 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        bus.register(eventHandler);
+    public void onDestroy() {
+        bus.unregister(eventHandler);
+        super.onDestroy();
     }
 
     @Override
     public void onPause() {
-        bus.unregister(eventHandler);
         call.cancel();
         super.onPause();
     }
@@ -100,7 +99,7 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
             @Override
             public void onFailure(Call<List<Match>> call, Throwable t) {
-                Toast.makeText(getContext(), "Failed to fetch match results", Toast.LENGTH_SHORT).show();
+                System.out.println("Failed to fetch match results");
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
