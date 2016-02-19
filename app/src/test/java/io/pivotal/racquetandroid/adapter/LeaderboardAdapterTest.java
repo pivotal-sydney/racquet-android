@@ -83,7 +83,7 @@ public class LeaderboardAdapterTest {
         LeaderboardAdapter.MinorLeaguesViewHolder minorHolder = (LeaderboardAdapter.MinorLeaguesViewHolder) adapter.onCreateViewHolder(new LinearLayout(RuntimeEnvironment.application), LeaderboardAdapter.MINOR_LEAGUE_ITEMS);
         adapter.onBindViewHolder(minorHolder, 0);
 
-        assertThat(minorHolder.list.getChildCount()).isEqualTo(9);
+        assertThat(minorHolder.list.getChildCount()).isEqualTo(8);
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(picasso, times(8)).load(captor.capture());
         assertThat(captor.getAllValues().get(0)).isEqualTo("http://profile/url/name1");
@@ -101,7 +101,7 @@ public class LeaderboardAdapterTest {
         adapter = new LeaderboardAdapter(leaderboard);
         LeaderboardAdapter.MinorLeaguesViewHolder minorHolder = (LeaderboardAdapter.MinorLeaguesViewHolder) adapter.onCreateViewHolder(new LinearLayout(RuntimeEnvironment.application), LeaderboardAdapter.MINOR_LEAGUE_ITEMS);
         adapter.onBindViewHolder(minorHolder, 0);
-        assertThat(minorHolder.list.getChildCount()).isEqualTo(2);
+        assertThat(minorHolder.list.getChildCount()).isEqualTo(1);
     }
 
     @Test

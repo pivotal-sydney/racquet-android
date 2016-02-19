@@ -15,8 +15,8 @@
 
     <ImageView
         android:id="@+id/profile"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="@dimen/profile_size_small"
+        android:layout_height="@dimen/profile_size_small"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/rank"
         tools:src="@drawable/club" />

@@ -4,4 +4,6 @@
     <dimen name="grid_spacing">1dp</dimen>
     <dimen name="t11">11sp</dimen>
     <dimen name="padding_width">20dp</dimen>
+    <dimen name="profile_size_small">40dp</dimen>
+    <dimen name="profile_size_large">75dp</dimen>
 </resources>

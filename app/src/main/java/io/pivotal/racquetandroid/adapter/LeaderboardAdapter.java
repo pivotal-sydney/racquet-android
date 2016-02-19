@@ -96,18 +96,18 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Bind(R.id.minor_list)
         LinearLayout list;
 
-        @Bind(R.id.profile)
-        ImageView profile;
         private final LinearLayout.LayoutParams params;
 
         public MinorLeaguesViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            params = (LinearLayout.LayoutParams) profile.getLayoutParams();
+            Resources resources = itemView.getResources();
+            params = new LinearLayout.LayoutParams(0, resources.getDimensionPixelSize(R.dimen.profile_size_small), 1);
         }
 
         public void bind(List<Ranking> minors, Picasso picasso) {
             int size = Math.min(minors.size(), 8);
+            list.removeAllViews();
             for (int i = 0; i < size; i++) {
                 ImageView imageView = new ImageView(itemView.getContext());
                 imageView.setLayoutParams(params);
